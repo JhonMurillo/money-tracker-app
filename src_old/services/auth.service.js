@@ -3,10 +3,11 @@ import { Context } from '../Context'
 
 const {} = useContext(Context)
 
-const API_URL = "http://localhost:3000/api/v1/auth";
+const { API_URL = 'http://localhost:3000' } = process.env;
+const API = `${API_URL}/api/v1/auth`;
 
 const register = (name, email, password) => {
-    return axios.post(`${API_URL}/signup`, {
+    return axios.post(`${API}/signup`, {
         name,
         email,
         password,
@@ -15,7 +16,7 @@ const register = (name, email, password) => {
 
 const login = (username, password) => {
     return axios
-        .post(`${API_URL}/login`, {
+        .post(`${API}/login`, {
             username,
             password,
         })

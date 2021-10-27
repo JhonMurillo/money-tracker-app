@@ -2,7 +2,11 @@ import { useState } from 'react'
 
 export const useInputCheckbox = initialValue => {
     const [value, setValue] = useState(initialValue)
-    const onClick = e => setValue(e.target.checked)
+    const [checked, setChecked] = useState(initialValue)
+    const onChange = e => {
+        setValue(e.target.checked)
+        setChecked(e.target.checked)
+    }
 
-    return { value, onClick }
+    return { value, checked, onChange }
 }

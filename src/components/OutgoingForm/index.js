@@ -7,6 +7,11 @@ import Button from '@material-ui/core/Button';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
+import Chip from '@material-ui/core/Chip';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
+import LockIcon from '@material-ui/icons/Lock';
+import { NumberFormatCustom } from '../../util/NumberFormatCustom';
 import { OutgoingDetailForm } from '../OutgoingDetailForm'
 import { ListOutgoingDetails } from '../ListOutgoingDetails'
 
@@ -36,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
     },
     divider: {
         marginBlockEnd: '20px',
+        marginBlockStart: '20px',
     }
 }));
 
@@ -46,6 +52,13 @@ export const OutgoingForm = ({ error, disabled, loading, onSubmit }) => {
     let money = useInputValue(0);
     let isPaid = useInputCheckbox(false);
     const [outgoingsDetails, setOutgoingsDetails] = useState([])
+    const [metadata, setMetadata] = useState({
+        total: 0,
+        isClosed: false,
+        totalDetails: 0,
+        totalDetailPaid: 0,
+        totalDetailUnPaid: 0
+    })
 
 
     const handleSubmit = (event) => {
@@ -59,7 +72,7 @@ export const OutgoingForm = ({ error, disabled, loading, onSubmit }) => {
             isPaid: item.isPaid
         }])
 
-        console.log(calculate([...outgoingsDetails, {
+        setMetadata(calculate([...outgoingsDetails, {
             description: item.description,
             value: +item.money,
             isPaid: item.isPaid
@@ -75,8 +88,9 @@ export const OutgoingForm = ({ error, disabled, loading, onSubmit }) => {
                 value: 0
             }
         });
-        isPaid.onClick({
+        isPaid.onChange({
             target: {
+                value: false,
                 checked: false
             }
         });
@@ -98,6 +112,75 @@ export const OutgoingForm = ({ error, disabled, loading, onSubmit }) => {
                     {...date}
                     disabled={disabled}
                 />
+
+                <Divider className={classes.divider} />
+
+                <Grid container spacing={2}>
+                    <Grid item xs={2} sm={4} md={4}>
+                        <TextField
+                            autoComplete="total"
+                            name="total"
+                            variant="outlined"
+                            fullWidth
+                            disabled
+                            id="total"
+                            label="Total"
+                            value={metadata.total}
+                            InputProps={{
+                                inputComponent: NumberFormatCustom,
+                            }}
+                        />
+                    </Grid>
+                    
+                    <Grid item xs={2} sm={4} md={4}>
+                        <TextField
+                            autoComplete="totalDetails"
+                            name="totalDetails"
+                            variant="outlined"
+                            fullWidth
+                            disabled
+                            id="totalDetails"
+                            label="Total Details"
+                            value={metadata.totalDetails}
+                        >
+                        </TextField>
+                    </Grid>
+                
+                    <Grid item xs={2} sm={4} md={4}>
+                        <TextField
+                            autoComplete="totalDetailPaid"
+                            name="totalDetailPaid"
+                            variant="outlined"
+                            fullWidth
+                            disabled
+                            id="totalDetailPaid"
+                            label="Total Details Paid"
+                            value={metadata.totalDetailPaid}
+                        >
+                        </TextField>
+                    </Grid>
+                
+                    <Grid item xs={2} sm={4} md={4}>
+                        <TextField
+                            autoComplete="totalDetailUnPaid"
+                            name="totalDetailUnPaid"
+                            variant="outlined"
+                            fullWidth
+                            disabled
+                            id="totalDetailUnPaid"
+                            label="Total Details Unpaid"
+                            value={metadata.totalDetailUnPaid}
+                        >
+                        </TextField>
+                    </Grid>
+                
+                    <Grid item xs={2} sm={4} md={4}>
+                        <Chip color='primary' 
+                        label={metadata.isClosed ? 'Closed' : 'Open'} 
+                        icon={metadata.isClosed ? <LockIcon /> : <LockOpenIcon />} />
+                    </Grid>
+                
+                </Grid>
 
                 <Divider className={classes.divider} />
 

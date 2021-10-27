@@ -9,6 +9,9 @@ import { Alert } from '@material-ui/lab';
 import MoneyOffIcon from '@material-ui/icons/MoneyOff';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import Chip from '@material-ui/core/Chip';
+import Fab from '@material-ui/core/Fab';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import Avatar from '@material-ui/core/Avatar';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import { green } from '@material-ui/core/colors';
@@ -76,7 +79,16 @@ export const ListOutgoingDetails = ({ list = [] }) => {
                                 </React.Fragment>
                             }
                         />
+                        {/* <Fab color="primary" aria-label="edit" onClick={handleEditItem}> */}
+                        <Fab color="primary" aria-label="edit" onClick={(e)=> console.log(e)}>
+                            <EditIcon />
+                        </Fab>
+                        <Fab color="primary" aria-label="delete" onClick={(e)=> console.log(e)}>
+                            <DeleteIcon />
+                        </Fab>
                     </ListItem>
+
+
                     <Divider variant='inset' component='li' />
                 </div>
 
